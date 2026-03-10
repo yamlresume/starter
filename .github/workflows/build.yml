@@ -1,0 +1,53 @@
+name: Build Resumes
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build resumes
+        id: build
+        uses: yamlresume/action@v0.1.1
+        with:
+          resumes: |
+            resumes/resume-en.yml
+            resumes/resume-zh-hans.yml
+          verbose: true
+
+      - name: Upload PDF artifacts
+        if: ${{ !env.ACT }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: resume-pdfs
+          path: |
+            resumes/*.pdf
+
+      - name: Upload HTML artifacts
+        if: ${{ !env.ACT }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: resume-html
+          path: |
+            resumes/*.html
+
+      - name: Upload Markdown artifacts
+        if: ${{ !env.ACT }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: resume-markdown
+          path: |
+            resumes/*.md
+
+      - name: List generated files (local testing)
+        if: ${{ env.ACT }}
+        run: |
+          echo "Generated files:"
+          ls -la resumes/*.pdf resumes/*.html resumes/*.md 2>/dev/null || true

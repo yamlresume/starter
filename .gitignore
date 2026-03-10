@@ -1,0 +1,20 @@
+# macOS
+.DS_Store
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# LaTeX temp
+*.aux
+*.log
+*.out
+
+# build output
+resumes/*.html
+resumes/*.md
+resumes/*.pdf
+resumes/*.tex
